@@ -1,21 +1,20 @@
-<html>
-    <head>
-        <title>Django Girls blog</title>
-    </head>
-    <body>
-        <div>
-            <h1><a href="/">Django Girls Blog</a></h1>
-        </div>
-        <!--
-            postsリスト分ループして表示する。要素は、viewのpost_listクラス中の
-            Post.objects.filter～で取得したレコードが設定されている。
-        -->
-　　　　{% for post in posts %}
-            <div>
-                <p>published: {{ post.published_date }}</p>
-                <h1><a href="">{{ post.title }}</a></h1>
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% for post in posts %}
+            <div class="post">
+                <div class="date">
+                    <p>published: {{ post.published_date }}</p>
+                </div>
+                <!--
+                    post_detail・・・ post_detailの部分は、Djangoがblog/urls.pyに
+                    書かれた name=post_detail のURLを待ち受けることを表しています。
+                    pk・・・プライマリキーの略で、データベースの各レコードのユニークな名前
+                    Postオブジェクトの他のフィールド（title、authorなど）にアクセスするのと同じ方法で、
+                    post.pkと書くことによってプライマリキーにアクセスします！
+                -->
+                <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
                 <p>{{ post.text|linebreaksbr }}</p>
             </div>
-　　　　{% endfor %}
-    </body>
-</html>
+    {% endfor %}
+{% endblock %}
